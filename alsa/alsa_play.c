@@ -1,6 +1,7 @@
 #include "alsa_play.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <stdint.h>
 #include <unistd.h>             // sleep() :contentReference[oaicite:2]{index=2}
 #include <alsa/asoundlib.h>
@@ -12,7 +13,7 @@
 int play_audio(const char *filename) {
     FILE *file = fopen(filename, "rb");
     if (!file) {
-        perror("fopen audio"); 
+        perror("fopen audio");
         return -1;
     }
 

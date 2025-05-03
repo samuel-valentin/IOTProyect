@@ -1,4 +1,6 @@
-#include <opencv2/opencv.hpp> // Añade esta cabecera al inicio
+#include "pantalla.h"
+#include <opencv2/opencv.hpp>
+#include <cstring> // para strcmp
 
 void mostrar_pantalla(const char* color, const char* texto) {
     const int WIDTH = 1280;

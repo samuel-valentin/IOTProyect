@@ -21,20 +21,6 @@ int main(int argc, char * argv[]) {
     MFRC522_Init("/dev/gpiochip2", 8, "/dev/spidev1.0");
 
     for (;;) {
-        if (checkUID(uid_str, name)) {
-            printf("Acceso autorizado: Bienvenido %s\n", name);
-            play_audio("success.raw");
-
-            char mensaje[64];
-            snprintf(mensaje, sizeof(mensaje), "ACCESO OTORGADO: %s", name);
-            mostrar_pantalla("green", mensaje);
-        } else {
-            printf("Acceso denegado\n");
-            play_audio("failure.raw");
-
-            mostrar_pantalla("red", "ACCESO DENEGADO");
-        }
-        /*
         if (MFRC522_isCard(&TagType)) {
             printf("Tag Type: %X\n", TagType);
             // Lee el UID
@@ -45,17 +31,20 @@ int main(int argc, char * argv[]) {
                 if (checkUID(uid_str, name)) {
                     printf("Acceso autorizado: Bienvenido %s\n", name);
                     play_audio("success.raw");
+                    char mensaje[NAME_SIZE + 20];
+                    snprintf(mensaje, sizeof(mensaje), "Acceso autorizado: Bienvenido %s", name);
+                    mostrar_pantalla("green", mensaje);
                 } else {
                     printf("Acceso denegado\n");
                     play_audio("failure.raw");
+                    mostrar_pantalla("red", "Acceso denegado");
                 }
             }
             // Pausa breve para evitar retriggers inmediatos
             sleep(3);
             MFRC522_Halt();
-        }*/
+        }
     }
-
 
     return 0;
 }

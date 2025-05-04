@@ -29,15 +29,15 @@ int main(int argc, char * argv[]) {
                 uid_to_string(UID, uid_str);
                 printf("UID: %s\n", uid_str);
                 if (checkUID(uid_str, name)) {
-                    printf("Acceso autorizado: Bienvenido %s\n", name);
-                    play_audio("success.raw");
+                    printf("Acceso autorizado: Bienvenidx %s\n", name);
                     char mensaje[NAME_SIZE + 20];
-                    snprintf(mensaje, sizeof(mensaje), "Acceso autorizado: Bienvenido %s", name);
+                    snprintf(mensaje, sizeof(mensaje), "Acceso autorizado: Bienvenidx %s", name);
                     mostrar_pantalla("green", mensaje);
+                    play_audio("success.raw");
                 } else {
                     printf("Acceso denegado\n");
-                    play_audio("failure.raw");
                     mostrar_pantalla("red", "Acceso denegado");
+                    play_audio("failure.raw");
                 }
             }
             // Pausa breve para evitar retriggers inmediatos

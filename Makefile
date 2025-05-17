@@ -1,19 +1,30 @@
-CC ?= gcc
-CXX ?= g++
-CPP ?= g++
+# Compilers vienen del environment-setup
+APP_NAME   = main
 
-APP_NAME = main
-APP_OBJ_FILES = main.o mfrc522/mfrc522.o database/db.o third_party/cjson/cJSON.o alsa/alsa_play.o
+C_SRCS     = main.c \
+             mfrc522/mfrc522.c \
+             database/db.c \
+             third_party/cjson/cJSON.c \
+             alsa/alsa_play.c
 
-LIBS = -lasound 
+CXX_SRCS   = pantalla/pantalla.cpp
+
+C_OBJS     = $(C_SRCS:.c=.o)
+CXX_OBJS   = $(CXX_SRCS:.cpp=.o)
+APP_OBJS   = $(C_OBJS) $(CXX_OBJS)
+
+LIBS       = -lasound `pkg-config --cflags --libs opencv4`
 
 all: $(APP_NAME)
 
-$(APP_NAME) : $(APP_OBJ_FILES)
-	$(CXX) $^ -o $@  $(LIBS)
+$(APP_NAME): $(APP_OBJS)
+	$(CXX) $^ -o $@ $(LIBS)
 
-%.o : %.cc
-	$(CXX) -c $^ -o $@ $(LIBS)
+%.o: %.c
+	$(CC)   -Ithird_party/cjson -c $< -o $@
+
+%.o: %.cpp
+	$(CXX) -std=c++11 -Ithird_party/cjson -c $< -o $@
 
 clean:
-	rm -f *.o mfrc522/*.o database/*.o third_party/cjson/*.o alsa/*.o $(APP_NAME)
+	rm -f $(APP_OBJS) $(APP_NAME)

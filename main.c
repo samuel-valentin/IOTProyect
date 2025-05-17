@@ -3,6 +3,7 @@
 #include "database/db.h"        //Librerias para manejar la Base de Datos
 #include "alsa/alsa_play.h"
 #include <unistd.h>
+#include "pantalla/pantalla.h"
 
 
 void uid_to_string(const char *uid, char *str) {
@@ -23,6 +24,7 @@ int main(int argc, char * argv[]) {
     for (;;) {
         if (MFRC522_isCard(&TagType)) {      
             printf("Tag Type: %X\n", TagType);
+            char message[128];
             // Lee el UID
             
             if (MFRC522_ReadCardSerial(UID)) {
@@ -30,9 +32,15 @@ int main(int argc, char * argv[]) {
                 printf("UID: %s\n", uid_str);
                 if (checkUID(uid_str, name)) {
                     printf("Acceso autorizado: Bienvenido %s\n", name);
+                    // Construimos el saludo completo
+                    snprintf(message, sizeof(message), "Acceso autorizado: Bienvenido %s", name);
+                    show_screen("green", message);
                     play_audio("success.raw");
                 } else {
                     printf("Acceso denegado\n");
+                    // Mensaje de acceso denegado
+                    snprintf(message, sizeof(message), "Acceso denegado");
+                    show_screen("red", message);
                     play_audio("failure.raw");
                 }
             }
